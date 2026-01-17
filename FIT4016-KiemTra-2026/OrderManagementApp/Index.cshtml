@@ -1,0 +1,44 @@
+﻿@model IEnumerable<OrderManagementApp.Models.Order>
+
+<h2>Orders List</h2>
+
+@if (TempData["SuccessMessage"] != null)
+{
+    <div class="alert alert-success">@TempData["SuccessMessage"]</div>
+}
+
+<table class="table table-bordered">
+    <thead>
+        <tr>
+            <th>Customer Name</th>
+            <th>Email</th>
+            <th>Product</th>
+            <th>Quantity</th>
+            <th>Order Date</th>
+            <th>Delivery Date</th>
+            <th>Status</th>
+            <th>Actions</th>
+        </tr>
+    </thead>
+    <tbody>
+        @foreach (var order in Model)
+        {
+            <tr>
+                <td>@order.CustomerName</td>
+                <td>@order.CustomerEmail</td>
+                <td>@order.Product?.Name</td>
+                <td>@order.Quantity</td>
+                <td>@order.OrderDate.ToShortDateString()</td>
+                <td>@(order.DeliveryDate.HasValue? order.DeliveryDate.Value.ToShortDateString() : "-")</td>
+                <td>@(order.DeliveryDate.HasValue ? "Delivered" : "Pending")</td>
+                <td>
+                    <a asp-action="Detail" asp-route-id="@order.Id" class="btn btn-info btn-sm">Details</a>
+                    <a asp-action="Edit" asp-route-id="@order.Id" class="btn btn-primary btn-sm">Edit</a>
+                    <a asp-action="Delete" asp-route-id="@order.Id" class="btn btn-danger btn-sm">Delete</a>
+                </td>
+            </tr>
+        }
+    </tbody>
+</table>
+
+<a asp-action="Create" class="btn btn-success">Create New Order</a>
